@@ -8,8 +8,28 @@
         "Resource": "*",
         "Condition": {
           "Null": {
-            "aws:RequestTag/Project": "true",
-            "aws:RequestTag/Owner": "true",
+            "aws:RequestTag/Project": "true"
+          }
+        }
+      },
+      {
+        "Sid": "DenyCreateSecretWithNoOwnerTag",
+        "Effect": "Deny",
+        "Action": "s3:CreateBucket",
+        "Resource": "*",
+        "Condition": {
+          "Null": {
+            "aws:RequestTag/Owner": "true"
+          }
+        }
+      },
+      {
+        "Sid": "DenyCreateSecretWithNoDepartmentTag",
+        "Effect": "Deny",
+        "Action": "s3:CreateBucket",
+        "Resource": "*",
+        "Condition": {
+          "Null": {
             "aws:RequestTag/Department": "true"
           }
         }
@@ -29,7 +49,7 @@
         }
       },
       {
-        "Sid": "DenyRunInstanceWithNoCostCenterTag",
+        "Sid": "DenyRunInstanceWithNoOwnerTag",
         "Effect": "Deny",
         "Action": "ec2:RunInstances",
         "Resource": [
@@ -38,7 +58,21 @@
         ],
         "Condition": {
           "Null": {
-            "aws:RequestTag/CostCenter": "true"
+            "aws:RequestTag/Owner": "true"
+          }
+        }
+      },
+      {
+        "Sid": "DenyRunInstanceWithNoDepartmentTag",
+        "Effect": "Deny",
+        "Action": "ec2:RunInstances",
+        "Resource": [
+          "arn:aws:ec2:*:*:instance/*",
+          "arn:aws:ec2:*:*:volume/*"
+        ],
+        "Condition": {
+          "Null": {
+            "aws:RequestTag/Department": "true"
           }
         }
       }
